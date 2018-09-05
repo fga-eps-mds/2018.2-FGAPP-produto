@@ -85,5 +85,7 @@ target/
 __pycache__/
 local_settings.py
 
+# Virtualenv
+/env
 .env
 db.sqlite3
