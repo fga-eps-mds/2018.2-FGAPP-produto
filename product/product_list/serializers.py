@@ -7,7 +7,14 @@ class ProductListSerializer(serializers.ModelSerializer):
         model = ProductList
         fields = '__all__'
 
+<<<<<<< HEAD
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'email')
+=======
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('url', 'username', 'email')
+>>>>>>> 676bccfad4b5683ac66a1afab8b80958691e6bbd
