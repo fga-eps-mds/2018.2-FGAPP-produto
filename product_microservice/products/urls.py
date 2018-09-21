@@ -16,8 +16,10 @@ Including another URLconf
 from django.urls import path
 from django.conf.urls import url
 from products import views
+from .views import ProductDelete
 
 urlpatterns = [
     url(r'^products/$', views.ProductList.as_view()),
     url(r'^products/(?P<pk>[0-9]+)/$', views.ProductDetail.as_view()),
+    path('api/product_delete', ProductDelete),
 ]
