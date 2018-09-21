@@ -6,6 +6,7 @@ from rest_framework.status import (
     HTTP_403_FORBIDDEN,
     HTTP_200_OK,
     HTTP_500_INTERNAL_SERVER_ERROR,
+    HTTP_400_BAD_REQUEST,
 )
 from rest_framework.response import Response
 
@@ -19,16 +20,21 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 
 @api_view(["POST"])
 def ProductDelete(request):
+    # If request is valid
     fk_vendor = request.data.get("fk_vendor")
+    product_id = request.data.get("product_id")
+    if (product_id == None or fk_vendor == None):
+        return Response({'error': 'Formulario invalido.'},
+                                status=HTTP_400_BAD_REQUEST)
+    # If product exist
     try:
-        product = Product.objects.get(id=request.data.get("product_id"))
+        product = Product.objects.get(id=product_id)
     except:
         return Response({'error': 'Produto nao existe.'},
                                 status=HTTP_500_INTERNAL_SERVER_ERROR)
-
+    # If user is owner of product
     if (int(fk_vendor) == product.fk_vendor):
         product.delete()
         return Response(status=HTTP_200_OK)
-
     return Response({'error': 'Produto nao pertence a este usuario, permissao negada.'},
                             status=HTTP_403_FORBIDDEN)
