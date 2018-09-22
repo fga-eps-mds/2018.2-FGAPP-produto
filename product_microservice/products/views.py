@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.status import (
     HTTP_403_FORBIDDEN,
     HTTP_200_OK,
-    HTTP_500_INTERNAL_SERVER_ERROR,
+    HTTP_404_NOT_FOUND,
     HTTP_400_BAD_REQUEST,
 )
 from rest_framework.response import Response
@@ -19,7 +19,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
 
 @api_view(["POST"])
-def ProductDelete(request):
+def delete_product(request):
     # If request is valid
     fk_vendor = request.data.get("fk_vendor")
     product_id = request.data.get("product_id")
@@ -31,7 +31,7 @@ def ProductDelete(request):
         product = Product.objects.get(id=product_id)
     except:
         return Response({'error': 'Produto nao existe.'},
-                                status=HTTP_500_INTERNAL_SERVER_ERROR)
+                                status=HTTP_404_NOT_FOUND)
     # If user is owner of product
     if (int(fk_vendor) == product.fk_vendor):
         product.delete()
