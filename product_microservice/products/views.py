@@ -9,6 +9,7 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
 )
 from rest_framework.response import Response
+import requests
 
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -38,3 +39,19 @@ def delete_product(request):
         return Response(status=HTTP_200_OK)
     return Response({'error': 'Produto nao pertence a este usuario, permissao negada.'},
                             status=HTTP_403_FORBIDDEN)
+
+@api_view(["POST"])
+def create_product(request):
+    fk_vendor = request.data.get("fk_vendor")
+    name = request.data.get("name")
+    price = request.data.get("price")
+    photo = request.data.get("photo")
+    description = request.data.get("description")
+
+    # verifying if request is valid
+    if (fk_vendor == None or name == None or price == None or photo == None or description == None):
+        return Response({'error': 'Formulario invalido.'}, 
+                                status=HTTP_400_BAD_REQUEST)
+            
+    response = Response(requests.post('http://localhost:8002/products/', data=request.data))
+    return response
