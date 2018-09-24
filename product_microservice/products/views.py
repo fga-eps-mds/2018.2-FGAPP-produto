@@ -50,8 +50,14 @@ def create_product(request):
 
     # verifying if request is valid
     if (fk_vendor == None or name == None or price == None or photo == None or description == None):
-        return Response({'error': 'Formulario invalido.'}, 
+        return Response({'error': 'Formulario invalido.'},
                                 status=HTTP_400_BAD_REQUEST)
-            
-    response = Response(requests.post('http://localhost:8002/products/', data=request.data))
-    return response
+
+    Product.objects.create(
+                        fk_vendor = fk_vendor,
+                        name = name,
+                        price = price,
+                        photo = photo,
+                        description = description)
+
+    return Response(status=HTTP_200_OK)
