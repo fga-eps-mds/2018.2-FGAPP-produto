@@ -44,12 +44,17 @@ def delete_product(request):
 def create_product(request):
     fk_vendor = request.data.get("fk_vendor")
     name = request.data.get("name")
-    price = request.data.get("price")
+    price = 0.0
+    try:
+        price = float(request.data.get("price"))
+    except:
+        return Response({'error': 'Formulario invalido.'},
+                                status=HTTP_400_BAD_REQUEST)
     photo = request.data.get("photo")
     description = request.data.get("description")
 
     # verifying if request is valid
-    if (fk_vendor == None or name == None or price == None or photo == None or description == None):
+    if (fk_vendor == None or name == None or price == 0.0 or photo == None or description == None):
         return Response({'error': 'Formulario invalido.'},
                                 status=HTTP_400_BAD_REQUEST)
 
