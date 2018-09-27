@@ -25,19 +25,19 @@ def delete_product(request):
     fk_vendor = request.data.get("fk_vendor")
     product_id = request.data.get("product_id")
     if (product_id == None or fk_vendor == None):
-        return Response({'error': 'Formulario invalido.'},
+        return Response({'error': 'Formulário inválido.'},
                                 status=HTTP_400_BAD_REQUEST)
     # If product exist
     try:
         product = Product.objects.get(id=product_id)
     except:
-        return Response({'error': 'Produto nao existe.'},
+        return Response({'error': 'Produto não existe.'},
                                 status=HTTP_404_NOT_FOUND)
     # If user is owner of product
     if (int(fk_vendor) == product.fk_vendor):
         product.delete()
         return Response(status=HTTP_200_OK)
-    return Response({'error': 'Produto nao pertence a este usuario, permissao negada.'},
+    return Response({'error': 'Produto não pertence a este usuário, permissão negada.'},
                             status=HTTP_403_FORBIDDEN)
 
 @api_view(["POST"])
