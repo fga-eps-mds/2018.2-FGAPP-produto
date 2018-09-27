@@ -66,3 +66,15 @@ def create_product(request):
                         description = description)
 
     return Response(status=HTTP_200_OK)
+
+@api_view(["POST"])
+def list_user_products(request):
+    fk_vendor = request.data.get("fk_vendor")
+
+    if (fk_vendor == None):
+        return Response({'error': 'Usuário não identificado.'},
+                                status=HTTP_400_BAD_REQUEST)
+
+    # all data of a certain user
+    products = Product.objects.filter(fk_vendor = fk_vendor).values()
+    return Response(products, status=HTTP_200_OK)
