@@ -48,14 +48,14 @@ def create_product(request):
     try:
         price = float(request.data.get("price"))
     except:
-        return Response({'error': 'Formulario invalido.'},
+        return Response({'error': 'Campo inválido de preço.'},
                                 status=HTTP_400_BAD_REQUEST)
     photo = request.data.get("photo")
     description = request.data.get("description")
 
     # verifying if request is valid
-    if (fk_vendor == None or name == None or price == 0.0 or photo == None or description == None):
-        return Response({'error': 'Formulario invalido.'},
+    if (fk_vendor == None or name == None or name == "" or price == 0.0 or photo == None or description == None or description == ""):
+        return Response({'error': 'Um ou mais campos vazios.'},
                                 status=HTTP_400_BAD_REQUEST)
 
     Product.objects.create(
