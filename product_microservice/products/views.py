@@ -1,5 +1,6 @@
 from products.models import Product
 from products.serializers import ProductSerializer
+from django.core import serializers
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.status import (
@@ -10,6 +11,7 @@ from rest_framework.status import (
 )
 from rest_framework.response import Response
 import requests
+import json
 
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -54,7 +56,7 @@ def create_product(request):
     description = request.data.get("description")
 
     # verifying if request is valid
-    if (fk_vendor == None or name == None or price == 0.0 or photo == None or description == None):
+    if (fk_vendor == None or name == None or price == None or photo == None or description == None):
         return Response({'error': 'Formulario invalido.'},
                                 status=HTTP_400_BAD_REQUEST)
 
@@ -66,3 +68,16 @@ def create_product(request):
                         description = description)
 
     return Response(status=HTTP_200_OK)
+
+@api_view(["POST"])
+def user_products(request):
+    user_id = request.data.get('user_id')
+
+    if(user_id == None):
+        return Response({'error':'Campos nao podem estar vazios.'},status=HTTP_400_BAD_REQUEST)
+
+    try:
+        products = Product.objects.filter(fk_vendor = user_id).values()    
+        return Response(data=products, status=HTTP_200_OK)
+    except:
+        return Response({'error': 'Formulario invalido.'}, status=HTTP_400_BAD_REQUEST)

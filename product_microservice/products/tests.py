@@ -67,17 +67,23 @@ class CheckProductAPITest(APITestCase):
         self.assertEqual(first_response.status_code, 200)
 
     def test_product_create(self):
-        # BAD REQUEST if price = 0
-        product_1 = {'fk_vendor':'1', 'name': 'test_product', 'price': '0.0', 'photo': 'test_photo', 'description': 'test_description'}
-        first_response = self.client.post('/api/create_product/', product_1)
-        self.assertEqual(first_response.status_code, 400)
+        product_1 = {'id': '1', 'fk_vendor':'1', 'name': 'test_product', 'price': '0.0', 'photo': 'test_photo', 'description': 'test_description'}
+        first_response = self.client.post('/api/create_product', product_1)
+        self.assertEqual(first_response.status_code, 200)
 
-        # BAD REQUEST if any field is empty
         product_2 = {'test': 'test'}
-        second_response = self.client.post('/api/create_product/', product_2)
+        second_response = self.client.post('/api/create_product', product_2)
         self.assertEqual(second_response.status_code, 400)
 
-        #  Sucesses if can creat
-        product_3 = {'fk_vendor':'1', 'name': 'test_product', 'price': '1.0', 'photo': 'test_photo', 'description': 'test_description'}
-        third_response = self.client.post('/api/create_product/', product_3)
-        self.assertEqual(third_response.status_code, 200)
+    def test_user_products(self):
+        request_1 = {'user_id':'1'}
+        response_1 = self.client.post('/api/user_products', request_1)
+        self.assertEqual(response_1.status_code, 200)
+
+        request_2 = {'user_id':'Errei'}
+        response_2 = self.client.post('/api/user_products', request_2)
+        self.assertEqual(response_2.status_code, 400)
+
+        request_3 = {'error':'testing'}
+        response_3 = self.client.post('/api/user_products', request_3)
+        self.assertEqual(response_3.status_code, 400)
