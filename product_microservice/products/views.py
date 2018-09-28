@@ -10,6 +10,7 @@ from rest_framework.status import (
 )
 from rest_framework.response import Response
 import requests
+import json
 
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -68,13 +69,14 @@ def create_product(request):
     return Response(status=HTTP_200_OK)
 
 @api_view(["POST"])
-def list_user_products(request):
-    fk_vendor = request.data.get("fk_vendor")
+def user_products(request):
+    user_id = request.data.get('user_id')
 
-    if (fk_vendor == None):
-        return Response({'error': 'Usuário não identificado.'},
-                                status=HTTP_400_BAD_REQUEST)
+    if(user_id == None):
+        return Response({'error':'Usuário não identificado.'},status=HTTP_400_BAD_REQUEST)
 
-    # all data of a certain user
-    products = Product.objects.filter(fk_vendor = fk_vendor).values()
-    return Response(products, status=HTTP_200_OK)
+    try:
+        products = Product.objects.filter(fk_vendor = user_id).values()
+        return Response(data=products, status=HTTP_200_OK)
+    except:
+        return Response({'error': 'Formulario invalido.'}, status=HTTP_400_BAD_REQUEST)
