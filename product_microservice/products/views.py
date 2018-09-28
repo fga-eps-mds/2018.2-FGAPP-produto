@@ -56,7 +56,7 @@ def create_product(request):
     description = request.data.get("description")
 
     # verifying if request is valid
-    if (fk_vendor == None or name == None or price == None or photo == None or description == None):
+    if (fk_vendor == None or name == None or price == None or price == 0.0 or photo == None or description == None):
         return Response({'error': 'Formulario invalido.'},
                                 status=HTTP_400_BAD_REQUEST)
 
@@ -74,7 +74,7 @@ def user_products(request):
     user_id = request.data.get('user_id')
 
     if(user_id == None):
-        return Response({'error':'Campos nao podem estar vazios.'},status=HTTP_400_BAD_REQUEST)
+        return Response({'error':'Usuário não identificado.'},status=HTTP_400_BAD_REQUEST)
 
     try:
         products = Product.objects.filter(fk_vendor = user_id).values()

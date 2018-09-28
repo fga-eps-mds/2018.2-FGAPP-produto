@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^products/$', views.ProductList.as_view()),
     url(r'^products/(?P<pk>[0-9]+)/$', views.ProductDetail.as_view()),
     path('api/delete_product', delete_product),
-    path('api/create_product', create_product),
+    path('api/create_product/', create_product),
     path('api/user_products', user_products),
 ]
