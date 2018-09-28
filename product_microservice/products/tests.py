@@ -81,3 +81,14 @@ class CheckProductAPITest(APITestCase):
         product_3 = {'fk_vendor':'1', 'name': 'test_product', 'price': '1.0', 'photo': 'test_photo', 'description': 'test_description'}
         third_response = self.client.post('/api/create_product/', product_3)
         self.assertEqual(third_response.status_code, 200)
+
+    def test_list_user_products(self):
+        # BAD REQUEST if fk_vendor == None
+        request_1 = {'test': 'test'}
+        first_response = self.client.post('/api/list_user_products', request_1)
+        self.assertEqual(first_response.status_code, 400)
+
+        # SUCESSES if has fk_vendor
+        request_2 = {'fk_vendor': 1}
+        second_response = self.client.post('/api/list_user_products', request_2)
+        self.assertEqual(second_response.status_code, 200)
