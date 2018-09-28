@@ -56,13 +56,8 @@ def create_product(request):
     description = request.data.get("description")
 
     # verifying if request is valid
-<<<<<<< HEAD
     if (fk_vendor == None or name == None or price == None or photo == None or description == None):
         return Response({'error': 'Formulario invalido.'},
-=======
-    if (fk_vendor == None or name == None or name == "" or price == 0.0 or photo == None or description == None or description == ""):
-        return Response({'error': 'Um ou mais campos vazios.'},
->>>>>>> 40a8fc4bfc2b564b042086a433f7ec9887ff048f
                                 status=HTTP_400_BAD_REQUEST)
 
     Product.objects.create(
@@ -82,7 +77,7 @@ def user_products(request):
         return Response({'error':'Campos nao podem estar vazios.'},status=HTTP_400_BAD_REQUEST)
 
     try:
-        products = Product.objects.filter(fk_vendor = user_id).values()    
+        products = Product.objects.filter(fk_vendor = user_id).values()
         return Response(data=products, status=HTTP_200_OK)
     except:
         return Response({'error': 'Formulario invalido.'}, status=HTTP_400_BAD_REQUEST)
