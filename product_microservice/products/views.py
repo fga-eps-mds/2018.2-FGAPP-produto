@@ -3,6 +3,7 @@ from products.serializers import ProductSerializer
 from django.core import serializers
 from rest_framework import generics
 from rest_framework.decorators import api_view
+from django.core import serializers
 from rest_framework.status import (
     HTTP_403_FORBIDDEN,
     HTTP_200_OK,
@@ -81,3 +82,19 @@ def user_products(request):
         return Response(data=products, status=HTTP_200_OK)
     except:
         return Response({'error': 'Formulario invalido.'}, status=HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def product_detail(request):
+    product_id = request.data.get('product_id')
+
+    if(product_id == None):
+        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
+
+    try:
+        product = Product.objects.get(id = product_id)
+        product_json = ProductSerializer(product)
+        # print(json.loads(product))
+        return Response(data=product_json.data, status=HTTP_200_OK)
+    except:
+        # print(product)
+        return Response({'error': 'Produto não existe.'}, status=HTTP_400_BAD_REQUEST)
