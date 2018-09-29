@@ -82,3 +82,9 @@ def user_products(request):
         return Response(data=products, status=HTTP_200_OK)
     except:
         return Response({'error': 'Formulario invalido.'}, status=HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def all_products(request):
+    token = request.data.get('token')
+    products = Product.objects.all().values()
+    return Response(data=products, status=HTTP_200_OK)
