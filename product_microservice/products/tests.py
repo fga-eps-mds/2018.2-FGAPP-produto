@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import Product
 from rest_framework.test import APITestCase
+import json
 
 # Create your tests here.
 class CheckProductAPITest(APITestCase):
@@ -94,3 +95,8 @@ class CheckProductAPITest(APITestCase):
         request_3 = {'error':'testing'}
         response_3 = self.client.post('/api/user_products/', request_3)
         self.assertEqual(response_3.status_code, 400)
+
+    def test_all_products(self):
+        request_1 = {}
+        response_1 = self.client.post('/api/all_products/', request_1)
+        self.assertEqual(response_1.status_code, 200)

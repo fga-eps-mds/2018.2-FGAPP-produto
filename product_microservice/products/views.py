@@ -25,7 +25,6 @@ def delete_product(request):
     # If request is valid
     fk_vendor = request.data.get("fk_vendor")
     product_id = request.data.get("product_id")
-    token = request.data.get('token')
     if (product_id == None or fk_vendor == None):
         return Response({'error': 'Formulário inválido.'},
                                 status=HTTP_400_BAD_REQUEST)
@@ -47,7 +46,6 @@ def create_product(request):
     fk_vendor = request.data.get("fk_vendor")
     name = request.data.get("name")
     price = 0.0
-    token = request.data.get('token')
     try:
         price = float(request.data.get("price"))
     except:
@@ -73,7 +71,6 @@ def create_product(request):
 @api_view(["POST"])
 def user_products(request):
     user_id = request.data.get('user_id')
-    token = request.data.get('token')
     if(user_id == None):
         return Response({'error':'Usuário não identificado.'},status=HTTP_400_BAD_REQUEST)
 
@@ -85,6 +82,5 @@ def user_products(request):
 
 @api_view(["POST"])
 def all_products(request):
-    token = request.data.get('token')
     products = Product.objects.all().values()
     return Response(data=products, status=HTTP_200_OK)
