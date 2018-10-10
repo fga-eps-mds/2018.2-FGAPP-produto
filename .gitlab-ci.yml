@@ -67,3 +67,10 @@ deploy to staging:
   script:
     - sh install-kubectl.sh
     - sh run-deploy.sh staging
+
+deploy to heroku:
+  script:
+  - gem install dpl
+  - cd product_microservice && dpl --provider=heroku --app=product-microservice --api-key=$HEROKU_DEV_KEY
+  only:
+  - devops/postgres
