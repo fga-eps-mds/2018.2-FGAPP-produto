@@ -7,7 +7,7 @@
 Microsserviço de gerenciamento de produtos, no projeto [Integra - Vendas](https://github.com/fga-eps-mds/2018.2-iFood).
 
 ## Instalando e executando o projeto
-```sh
+```shell
 make
 
 # dentro do container
