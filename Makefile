@@ -1,7 +1,8 @@
 default:
-	docker build . -t docker-django
-	docker run --rm -p 8002:8002 -v `pwd`:"/app" -w "/app" --name product-microservice -it docker-django bash 
+	docker-compose up
 
 run:
-	docker build . -t docker-django
-	docker run --rm -p 8002:8002 -v `pwd`:"/app" -w "/app" --net=backend --name product-microservice -d docker-django bash -c "sh run-django.sh"
+	echo NEED_UPDATE
+
+production:
+	docker-compose -f docker-compose-production.yml up
