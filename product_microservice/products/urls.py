@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path
 from django.conf.urls import url
 from products import views
-from .views import delete_product, create_product, user_products, all_products, get_product
+from .views import delete_product, create_product, user_products, all_products, get_product, edit_product
 
 urlpatterns = [
     url(r'^products/$', views.ProductList.as_view()),
@@ -26,4 +26,5 @@ urlpatterns = [
     path('api/user_products/', user_products),
     path('api/all_products/', all_products),
     path('api/get_product/', get_product),
+    path('api/edit_product/', edit_product),
 ]

@@ -97,3 +97,26 @@ def get_product(request):
         return Response(data=product_json.data, status=HTTP_200_OK)
     except:
         return Response({'error': 'Produto não existe.'}, status=HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def edit_product(request):
+    product_id = request.data.get('product_id')
+    name = request.data.get('name')
+    price = request.data.get('price')
+    photo = request.data.get('photo')
+    description = request.data.get('description')
+
+    if(product_id == None):
+        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
+
+    try:
+        product = Product.objects.get(id = product_id)
+    except:
+        return Response({'error': 'Produto não existe.'}, status=HTTP_400_BAD_REQUEST)
+
+    serializer = ProductSerializer(product, request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
