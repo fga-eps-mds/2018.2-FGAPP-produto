@@ -2,6 +2,7 @@ from products.models import Product
 from products.serializers import ProductSerializer
 from rest_framework import generics
 from rest_framework.decorators import api_view
+from django.core import serializers
 from rest_framework.status import (
     HTTP_403_FORBIDDEN,
     HTTP_200_OK,
@@ -83,3 +84,39 @@ def user_products(request):
 def all_products(request):
     products = Product.objects.all().values()
     return Response(data=products, status=HTTP_200_OK)
+
+@api_view(["POST"])
+def get_product(request):
+    product_id = request.data.get('product_id')
+    if(product_id == None):
+        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
+
+    try:
+        product = Product.objects.get(id = product_id)
+        product_json = ProductSerializer(product)
+        return Response(data=product_json.data, status=HTTP_200_OK)
+    except:
+        return Response({'error': 'Produto não existe.'}, status=HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def edit_product(request):
+    product_id = request.data.get('product_id')
+    name = request.data.get('name')
+    price = request.data.get('price')
+    photo = request.data.get('photo')
+    description = request.data.get('description')
+
+    if(product_id == None):
+        return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
+
+    try:
+        product = Product.objects.get(id = product_id)
+    except:
+        return Response({'error': 'Produto não existe.'}, status=HTTP_400_BAD_REQUEST)
+
+    serializer = ProductSerializer(product, request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

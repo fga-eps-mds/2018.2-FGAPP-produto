@@ -100,3 +100,23 @@ class CheckProductAPITest(APITestCase):
         request_1 = {}
         response_1 = self.client.post('/api/all_products/', request_1)
         self.assertEqual(response_1.status_code, 200)
+
+    def test_get_product(self):
+        product_1 = {'id': '1', 'fk_vendor':'1', 'name': 'test_product', 'price': '0.0', 'photo': 'test_photo', 'description': 'test_description'}
+        self.client.post('/products/', product_1)
+
+        request_1 = {'product_id': '1'}
+        response_1 = self.client.post('/api/get_product/', request_1)
+        self.assertEqual(response_1.status_code, 200)
+
+        request_2 = {'test': 'test'}
+        response_2 = self.client.post('/api/get_product/', request_2)
+        self.assertEqual(response_2.status_code, 400)
+
+        request_3 = {'product_id': ''}
+        response_3 = self.client.post('/api/get_product/', request_3)
+        self.assertEqual(response_3.status_code, 400)
+
+        request_4 = {'product_id': '2'}
+        response_4 = self.client.post('/api/get_product/', request_4)
+        self.assertEqual(response_4.status_code, 400)

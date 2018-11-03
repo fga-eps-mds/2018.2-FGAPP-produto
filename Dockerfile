@@ -1,9 +1,8 @@
-FROM python:3
+FROM python:3.5.6-slim-stretch
 ENV PYTHONUNBUFFERED 1
 
-RUN mkdir /code
-WORKDIR /code
-ADD VERSION .
+ADD . /code
+WORKDIR /code/product_microservice
 
 ADD ./product_microservice /code/
 
