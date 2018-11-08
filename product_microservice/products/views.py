@@ -101,10 +101,6 @@ def get_product(request):
 @api_view(["POST"])
 def edit_product(request):
     product_id = request.data.get('product_id')
-    name = request.data.get('name')
-    price = request.data.get('price')
-    photo = request.data.get('photo')
-    description = request.data.get('description')
 
     if(product_id == None):
         return Response({'error':'Falha na requisição.'},status=HTTP_400_BAD_REQUEST)
@@ -114,7 +110,14 @@ def edit_product(request):
     except:
         return Response({'error': 'Produto não existe.'}, status=HTTP_400_BAD_REQUEST)
 
-    serializer = ProductSerializer(product, request.data)
+    # Transforming request to python dictionary to treat photo
+    request_dict = request.data.dict()
+    photo = request_dict.get('photo')
+
+    if(photo == None):
+        request_dict.update({'photo': product.photo})
+
+    serializer = ProductSerializer(product, request_dict)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
