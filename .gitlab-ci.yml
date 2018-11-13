@@ -74,6 +74,6 @@ deploy to heroku:
   stage: deploy
   script:
   - sh heroku-helper.sh
-  - cd product_microservice && dpl --provider=heroku --app=product-microservice --api-key=$HEROKU_DEV_KEY
+  - cd product_microservice && dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_DEV_KEY
   only:
   - dev
