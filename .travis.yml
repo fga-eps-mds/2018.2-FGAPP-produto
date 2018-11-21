@@ -3,13 +3,12 @@ python:
   - "3.4"
 
 stages:
-  - check-container
   - test
   - deploy
 
 jobs:
   include:
-    - stage: check-container
+    - stage: test
       sudo: required
       services:
         - docker
@@ -17,7 +16,7 @@ jobs:
       script:
         - make check-docker-production
 
-    - stage: check-container
+    - stage: test
       sudo: required
       services:
         - docker
@@ -35,6 +34,8 @@ jobs:
       script: sh run-tests.sh
 
     - stage: deploy
+      before_deploy: cd product_microservice
+      name: "Deploying to Staging"
       provider: heroku
       api_key:
         heroku/deploy-stg: $HEROKU_DEV_KEY
