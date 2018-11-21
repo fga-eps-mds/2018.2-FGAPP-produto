@@ -35,17 +35,10 @@ jobs:
       script: sh run-tests.sh
 
     - stage: deploy
+      install: npm install -g heroku
       name: "Deploying to Staging"
-      deploy:
-        before_script: echo Hello-Script
-        before-script: echo Hello-Script
-        install: echo HelloInstall
-        before: echo HelloBefore
-        before_deploy:
-          - echo "-> Deploy :D"
-          - cd product_microservice
-        provider: heroku
-        api_key:
-          heroku/deploy-stg: $HEROKU_DEV_KEY
-        app:
-          heroku/deploy-stg: $HEROKU_APP
+      script:
+        - . ./heroku-helper.sh
+        - updateVersion
+        - loginHeroku $EMAIL_HEROKU $HEROKU_TOKEN
+        - deployMaster $HEROKU_APP product_microservice
