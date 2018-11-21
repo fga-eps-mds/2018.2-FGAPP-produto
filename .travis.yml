@@ -37,6 +37,10 @@ jobs:
     - stage: deploy
       name: "Deploying to Staging"
       deploy:
+        before_script: echo Hello-Script
+        before-script: echo Hello-Script
+        install: echo HelloInstall
+        before: echo HelloBefore
         before_deploy:
           - echo "-> Deploy :D"
           - cd product_microservice
