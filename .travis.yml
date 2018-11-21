@@ -37,8 +37,8 @@ jobs:
     - stage: deploy
       install: npm install -g heroku
       name: "Deploying to Staging"
-      # only:
-      #   - dev
+      only:
+        - dev
       script:
         - . ./heroku-helper.sh
         - updateVersion
