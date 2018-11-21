@@ -6,6 +6,10 @@ stages:
   - test
   - deploy
 
+before_deploy:
+  - echo "-> Deploy :D"
+  - cd product_microservice
+
 jobs:
   include:
     - stage: test
@@ -34,7 +38,6 @@ jobs:
       script: sh run-tests.sh
 
     - stage: deploy
-      before_deploy: cd product_microservice
       name: "Deploying to Staging"
       provider: heroku
       api_key:
