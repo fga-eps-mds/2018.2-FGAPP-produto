@@ -68,10 +68,10 @@ deploy to production:
 #     - sh install-kubectl.sh
 #     - sh run-deploy.sh staging
 
-deploy to heroku:
-  stage: deploy
-  script:
-  - sh heroku-helper.sh
-  - git push heroku `git subtree split --prefix product_microservice HEAD`:master --force
-  # only:
-  # - dev
+# deploy to heroku:
+#   stage: deploy
+#   script:
+#   - sh heroku-helper.sh
+#   - git push heroku `git subtree split --prefix product_microservice HEAD`:master --force
+#   # only:
+#   # - dev

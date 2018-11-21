@@ -5,6 +5,7 @@ python:
 stages:
   - check-container
   - test
+  - deploy
 
 jobs:
   include:
@@ -32,5 +33,12 @@ jobs:
         - pip install -r product_microservice/requirements/dev.txt
       name: "Unit Tests"
       script: sh run-tests.sh
+
+    - stage: deploy
+      provider: heroku
+      api_key:
+        heroku/deploy-stg: $HEROKU_DEV_KEY
+      app:
+        heroku/deploy-stg: $HEROKU_APP
 
     
