@@ -69,11 +69,9 @@ deploy to production:
 #     - sh run-deploy.sh staging
 
 deploy to heroku:
-  before_script:
-    - gem install dpl
   stage: deploy
   script:
   - sh heroku-helper.sh
-  - cd product_microservice && dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_DEV_KEY
-  only:
-  - dev
+  - git push heroku `git subtree split --prefix product_microservice HEAD`:master --force
+  # only:
+  # - dev
