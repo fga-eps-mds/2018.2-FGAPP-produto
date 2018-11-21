@@ -36,11 +36,12 @@ jobs:
 
     - stage: deploy
       name: "Deploying to Staging"
-      before_deploy:
-        - echo "-> Deploy :D"
-        - cd product_microservice
-      provider: heroku
-      api_key:
-        heroku/deploy-stg: $HEROKU_DEV_KEY
-      app:
-        heroku/deploy-stg: $HEROKU_APP
+      deploy:
+        before_deploy:
+          - echo "-> Deploy :D"
+          - cd product_microservice
+        provider: heroku
+        api_key:
+          heroku/deploy-stg: $HEROKU_DEV_KEY
+        app:
+          heroku/deploy-stg: $HEROKU_APP
