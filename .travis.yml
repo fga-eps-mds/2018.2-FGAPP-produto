@@ -4,6 +4,7 @@ python:
 
 stages:
   - test
+  - deploy
 
 
 jobs:
@@ -33,13 +34,13 @@ jobs:
       name: "Unit Tests"
       script: sh run-tests.sh
 
-deploy:
-  name: "Deploying to Staging"
-  before_deploy:
-    - echo "-> Deploy :D"
-    - cd product_microservice
-  provider: heroku
-  api_key:
-    heroku/deploy-stg: $HEROKU_DEV_KEY
-  app:
-    heroku/deploy-stg: $HEROKU_APP
+    - stage: deploy
+      name: "Deploying to Staging"
+      before_deploy:
+        - echo "-> Deploy :D"
+        - cd product_microservice
+      provider: heroku
+      api_key:
+        heroku/deploy-stg: $HEROKU_DEV_KEY
+      app:
+        heroku/deploy-stg: $HEROKU_APP
